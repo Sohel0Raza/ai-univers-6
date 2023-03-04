@@ -99,8 +99,16 @@ const displayDetail = (data) => {
                 <h6 class="text-success rounded bg-white mx-3 p-3">${data.pricing ? data.pricing[1].price : "Free of cost"} ${data.pricing ? data.pricing[1].plan : "No plan"}</h6>
                 <h6 class="text-success rounded bg-white mx-3 p-3">${data.pricing ? data.pricing[2].price : "Free of cost /"} ${data.pricing ? data.pricing[2].plan : "No plan"}</h6>
             </div>
-<div>
-
+        <div class="d-flex justify-content-between m-3">
+            <div>
+                <h5>Features</h5>
+                <ul>
+                    <li>${data.features['1'].feature_name}</li>
+                    <li>${data.features['2'].feature_name}</li>
+                    <li>${data.features['3'].feature_name}</li>
+                </ul>
+            </div>
+        </div>
     </div>
     <div>
         <div class="card m-2">
