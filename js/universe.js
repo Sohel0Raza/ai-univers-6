@@ -14,21 +14,20 @@ const loadData = async (showAll = false) => {
 // display API data
 const displayData = (allData, showAll) => {
     const dataContainer = document.getElementById('data-container');
-    dataContainer.innerHTML='';
+    dataContainer.innerHTML = '';
     // display 6 items
     const showAllData = document.getElementById('showAll-data');
 
-    if(showAll){
+    if (showAll) {
         showAllData.classList.add('d-none')
     }
     else {
-        allData = allData.slice(0,6)
+        allData = allData.slice(0, 6)
         showAllData.classList.remove('d-none')
     }
 
     // single data display
-    allData.forEach (data => {
-        console.log('data :', data.features);
+    allData.forEach(data => {
         const dataDiv = document.createElement('div')
         dataDiv.classList.add('col')
         dataDiv.innerHTML = `
@@ -37,9 +36,7 @@ const displayData = (allData, showAll) => {
                 <div class="card-body pb-0">
                     <h5 class="card-title">Features</h5>
                    <ol>
-                        <li>${data.features[0] ? data.features[0] : 'not available'}</li>
-                        <li>${data.features[1] ? data.features[1] : 'not available'}</li>
-                        <li>${data.features[2] ? data.features[2] : 'not available'}</li>
+                   ${data.features.map(feature => feature ? `<li>${feature}</li>` : '').join('')}
                    </ol> 
                 </div>
                 <div class="d-flex justify-content-between align-items-center px-3">
@@ -87,33 +84,37 @@ const loadDetail = async (id) => {
 
 // display details data
 const displayDetail = (data) => {
-    console.log(data)
+    console.log('data :', data);
     const modalContainer = document.getElementById('modal-body');
     modalContainer.innerHTML = `
     <div class="card bg-danger-subtle m-2">
             <div class="card-body">
                 <h5 class="card-title fw-bold">${data.description}</h5>
             </div>
-            <div class="d-md-flex justify-content-evenly align-items-center text-center m-0">
-                <h6 class="text-success rounded bg-white mx-3 p-3">${data.pricing ? data.pricing[0].price : "Free of cost"} ${data.pricing ? data.pricing[0].plan : "No plan"}</h6>
-                <h6 class="text-success rounded bg-white mx-3 p-3">${data.pricing ? data.pricing[1].price : "Free of cost"} ${data.pricing ? data.pricing[1].plan : "No plan"}</h6>
-                <h6 class="text-success rounded bg-white mx-3 p-3">${data.pricing ? data.pricing[2].price : "Free of cost /"} ${data.pricing ? data.pricing[2].plan : "No plan"}</h6>
+            <div class="${data?.pricing?.length ? 'd-block' : 'd-none'}"> 
+                <div class="d-md-flex justify-content-evenly align-items-center text-center m-0 ">
+                    ${data?.pricing?.map(item => item? `<h6 class="text-success rounded bg-white mx-3 p-3"> ${item?.price ? item.price : "Free of cost"} ${item?.plan ? item.plan : "No plan"} </h6>` : "").join('')}
+                </div>
+            </div>
+            <div class="${!data?.pricing?.length ? 'd-block' : 'd-none'}">
+            <div class="d-md-flex justify-content-evenly align-items-center text-center m-0 ">
+                <h6 class="text-success rounded bg-white mx-3 p-3">No cost/ Free</h6>
+            </div>
             </div>
         <div class="d-flex justify-content-between m-3">
             <div>
                 <h5>Features</h5>
                 <ul>
-                    <li>${data.features['1'].feature_name}</li>
-                    <li>${data.features['2'].feature_name}</li>
-                    <li>${data.features['3'].feature_name}</li>
+                ${Object.keys(data?.features).map(key => key ? `<li> ${data.features[key].feature_name} </li>` : '').join('')}                    
                 </ul>
             </div>
             <div>
                 <h5>Integration</h5>
-                <ul>
-                    <li>${data.integrations ? data.integrations[0] : 'No data found'}</li>
-                    <li>${data.integrations ? data.integrations[1] : 'No data found'}</li>
-                    <li>${data.integrations ? data.integrations[2] : 'No data found'}</li>
+                <ul class="${data?.integrations?.length ? 'd-block' : 'd-none'}">
+                ${data?.integrations?.map(integration => integration ? `<li> ${integration} </li>` : `<li> Data not found </li>`).join('')}
+                </ul>
+                <ul class="${!data?.integrations?.length ? 'd-block' : 'd-none'}">
+                    No data found
                 </ul>
             </div>  
         </div>
