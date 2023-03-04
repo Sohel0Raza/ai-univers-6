@@ -113,6 +113,9 @@ const displayDetail = (data) => {
     </div>
     <div>
         <div class="card m-2">
+            <button type="button" class="btn btn-danger px-3 py-1 position-absolute top-0 start-0 ms-4 ${data.accuracy.score ? 'd-block' : 'd-none'}">
+                ${data.accuracy.score * 100}% accuracy
+            </button>
             <img class="p-3 img-fluid" src="${data.image_link[0]}" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title text-center">${data.input_output_examples ? data.input_output_examples['0'].input : "No data found"}</h5>
