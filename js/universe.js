@@ -25,8 +25,10 @@ const displayData = (allData, showAll) => {
         allData = allData.slice(0,6)
         showAllData.classList.remove('d-none')
     }
+
+    // single data display
     allData.forEach (data => {
-        console.log('data :', data);
+        console.log('data :', data.features);
         const dataDiv = document.createElement('div')
         dataDiv.classList.add('col')
         dataDiv.innerHTML = `
@@ -34,8 +36,11 @@ const displayData = (allData, showAll) => {
             <img class="p-3 img-fluid" src="${data.image}" class="card-img-top" alt="...">
                 <div class="card-body pb-0">
                     <h5 class="card-title">Features</h5>
-                    
-                    
+                   <ol>
+                        <li>${data.features[0] ? data.features[0] : 'not available'}</li>
+                        <li>${data.features[1] ? data.features[1] : 'not available'}</li>
+                        <li>${data.features[2] ? data.features[2] : 'not available'}</li>
+                   </ol> 
                 </div>
                 <div class="d-flex justify-content-between align-items-center px-3">
                     <div>
@@ -72,13 +77,15 @@ const toggleSpinner = isLoading => {
         loaderSection.classList.add('d-none')
     }
 }
-
+// details data load
 const loadDetail = async (id) => {
     const url = ` https://openapi.programming-hero.com/api/ai/tool/${id}`
     const res = await fetch(url)
     const data = await res.json()
     displayDetail(data.data)
 }
+
+// display details data
 const displayDetail = (data) => {
     console.log(data)
     const modalContainer = document.getElementById('modal-body');
