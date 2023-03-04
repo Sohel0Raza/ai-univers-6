@@ -108,6 +108,14 @@ const displayDetail = (data) => {
                     <li>${data.features['3'].feature_name}</li>
                 </ul>
             </div>
+            <div>
+                <h5>Integration</h5>
+                <ul>
+                    <li>${data.integrations ? data.integrations[0] : 'No data found'}</li>
+                    <li>${data.integrations ? data.integrations[1] : 'No data found'}</li>
+                    <li>${data.integrations ? data.integrations[2] : 'No data found'}</li>
+                </ul>
+            </div>  
         </div>
     </div>
     <div>
