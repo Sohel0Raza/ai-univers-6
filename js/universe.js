@@ -1,10 +1,10 @@
 // API data load by fetch
-const loadData = async () => {
+const loadData = async (showAll = false) => {
     const url = `https://openapi.programming-hero.com/api/ai/tools`;
     try {
         const res = await fetch(url);
         const data = await res.json();
-        displayData(data.data.tools);
+        displayData(data.data.tools, showAll);
     }
     catch (error) {
         console.log(error);
@@ -12,29 +12,30 @@ const loadData = async () => {
 }
 
 // display API data
-const displayData = (allData) => {
+const displayData = (allData, showAll) => {
     const dataContainer = document.getElementById('data-container');
+    dataContainer.innerHTML='';
     // display 6 items
     const showAllData = document.getElementById('showAll-data');
-    // if(allData.length > 6){
-    //     allData = allData.slice(0,6)
-    //     showAllData.classList.remove('d-none')
-    // }
-    // else{
-    //     showAllData.classList.add('d-none')
-    // }
-    allData.forEach(data => {
+
+    if(showAll){
+        showAllData.classList.add('d-none')
+    }
+    else {
+        allData = allData.slice(0,6)
+        showAllData.classList.remove('d-none')
+    }
+    allData.forEach (data => {
+        console.log('data :', data);
         const dataDiv = document.createElement('div')
         dataDiv.classList.add('col')
         dataDiv.innerHTML = `
-        <div class="card h-100">
+        <div class="card h-100 bg-light border-0 shadow-lg">
             <img class="p-3 img-fluid" src="${data.image}" class="card-img-top" alt="...">
                 <div class="card-body pb-0">
                     <h5 class="card-title">Features</h5>
-                    <ol id="features">
-                       
-                    </ol>
-                    <hr>
+                    
+                    
                 </div>
                 <div class="d-flex justify-content-between align-items-center px-3">
                     <div>
@@ -58,7 +59,7 @@ const displayData = (allData) => {
 document.getElementById('showAll-btn').addEventListener('click', function () {
     //start loader
     toggleSpinner(true)
-    loadData()
+    loadData(true)
 })
 
 //toggle Spinner 
@@ -87,9 +88,9 @@ const displayDetail = (data) => {
                 <h5 class="card-title fw-bold">${data.description}</h5>
             </div>
             <div class="d-md-flex justify-content-evenly align-items-center text-center m-0">
-                <h6 class="text-success rounded bg-white mx-3 p-3">${data.pricing[0].price} ${data.pricing[0].plan}</h6>
-                <h6 class="text-warning-emphasis rounded bg-white mx-3 p-3">${data.pricing[1].price} ${data.pricing[1].plan}</h6>
-                <h6 class="text-info-emphasis rounded bg-white mx-3 p-3">${data.pricing[2].price ? data.pricing[2].price : 'Free Of Cost'}</h6>
+                <h6 class="text-success rounded bg-white mx-3 p-3">${data.pricing ? data.pricing[0].price : "Free of cost"} ${data.pricing ? data.pricing[0].plan : "No plan"}</h6>
+                <h6 class="text-success rounded bg-white mx-3 p-3">${data.pricing ? data.pricing[1].price : "Free of cost"} ${data.pricing ? data.pricing[1].plan : "No plan"}</h6>
+                <h6 class="text-success rounded bg-white mx-3 p-3">${data.pricing ? data.pricing[2].price : "Free of cost /"} ${data.pricing ? data.pricing[2].plan : "No plan"}</h6>
             </div>
             <div class="d-flex justify-content-between m-3">
                 <div>
@@ -103,9 +104,9 @@ const displayDetail = (data) => {
                 <div>
                     <h5>Integration</h5>
                     <ul>
-                        <li>${data.integrations[0] ? data.integrations[0] : 'No data found'}</li>
-                        <li>${data.integrations[1] ? data.integrations[1] : 'No data found'}</li>
-                        <li>${data.integrations[2] ? data.integrations[2] : 'No data found'}</li>
+                        <li>${data.integrations ? data.integrations[0] : 'No data found'}</li>
+                        <li>${data.integrations ? data.integrations[1] : 'No data found'}</li>
+                        <li>${data.integrations ? data.integrations[2] : 'No data found'}</li>
                     </ul>
                 </div>
             </div>
@@ -114,8 +115,8 @@ const displayDetail = (data) => {
         <div class="card m-2">
             <img class="p-3 img-fluid" src="${data.image_link[0]}" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title text-center">${data.input_output_examples['0'].input}</h5>
-                <p class="card-text text-center">${data.input_output_examples['0'].output}</p>
+                <h5 class="card-title text-center">${data.input_output_examples ? data.input_output_examples['0'].input : "No data found"}</h5>
+                <p class="card-text text-center">${data.input_output_examples ? data.input_output_examples['0'].output.slice(0, 80) : 'No data found'}</p>
             </div>
         </div>
     </div>
